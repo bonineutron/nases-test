@@ -1,0 +1,17 @@
+.containerHeightAnimation {
+   animation: translate 100ms forwards;
+   overflow: hidden;
+   height: 0px;
+}
+
+@keyframes translate {
+   to {
+      height: 146px;
+   }
+}
+
+.containerNavLinks {
+   @media (max-height: 600px) {
+      max-height: 330px !important;
+   }
+}

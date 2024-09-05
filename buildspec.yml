@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+   install:
+      runtime-versions:
+         nodejs: 18
+
+      commands:
+         - echo Installing source NPM dependencies...
+
+         - npm install
+
+   build:
+      commands:
+         - echo Build started
+
+         - echo BUILD_ENV $BUILD_ENV
+
+         - echo BUCKET_NAME $BUCKET_NAME
+
+         - npm run build-$BUILD_ENV
+
+   post_build:
+      commands:
+         - aws s3 sync dist s3://$BUCKET_NAME --delete
+
+         - echo Build completed
