@@ -1,6 +1,6 @@
 export const appConfigurationColors = {
-   primaryColor: '#0082CA',
-   secondaryColor: '#1DA75E',
+   primaryColor: '#FCEE21',
+   secondaryColor: '#FCEE21',
    primaryGray: '#2E263D',
    mediumGray: '#D7DBDD',
    lightGray: '#F2F3F4'

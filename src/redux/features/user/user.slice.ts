@@ -7,14 +7,7 @@ const userLocalStorage: IUserApp | null = useGetLocalStorage<IUserApp>('user');
 const userVoid: IUserApp = {
    accessToken: '',
    email: '',
-   emailVerified: null,
-   familyName: '',
-   givenName: '',
-   hd: '',
-   name: '',
-   picture: '',
-   sub: '',
-   permissions: null
+   picture: ''
 };
 
 const initialState: IUserApp = userLocalStorage ?? userVoid;
@@ -26,26 +19,12 @@ export const userSlice = createSlice({
       updateUser: (state, action: PayloadAction<IUserApp>) => {
          state.accessToken = action.payload.accessToken;
          state.email = action.payload.email;
-         state.emailVerified = action.payload.emailVerified;
-         state.familyName = action.payload.familyName;
-         state.givenName = action.payload.givenName;
-         state.hd = action.payload.hd;
-         state.name = action.payload.name;
          state.picture = action.payload.picture;
-         state.sub = action.payload.sub;
-         state.permissions = action.payload.permissions;
       },
       removeUser: (state) => {
          state.accessToken = '';
          state.email = '';
-         state.emailVerified = null;
-         state.familyName = '';
-         state.givenName = '';
-         state.hd = '';
-         state.name = '';
          state.picture = '';
-         state.sub = '';
-         state.permissions = null;
       }
    }
 });

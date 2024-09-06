@@ -9,7 +9,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 export const theme: Theme = createTheme({
    palette: {
       primary: {
-         main: appConfigurationColors.primaryColor
+         main: '#2e4053'
       },
       secondary: {
          main: appConfigurationColors.secondaryColor

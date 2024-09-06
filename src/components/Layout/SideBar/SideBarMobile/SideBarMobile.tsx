@@ -40,12 +40,8 @@ export function SideBarMobile({ setOpen }: SideBarMobileProps): JSX.Element {
             }`}>
             <div className='h-full w-full flex flex-col gap-6'>
                <div className={`h-full w-full max-h-[50px] px-4 flex items-center justify-between`}>
-                  <Link to='/' className='h-full w-fit'>
-                     <img
-                        src='https://i0.wp.com/fundes.org/wp-content/uploads/2021/11/Fundes_Latinoamérica-1.png?fit=394%2C116&ssl=1'
-                        alt='logo-fundes'
-                        className={`h-full w-auto`}
-                     />
+                  <Link to='/' className='h-full w-fit flex items-center'>
+                     <img src='/logo_md.svg' alt='logo' className={`h-[18px] w-auto`} />
                   </Link>
 
                   <button onClick={handleClose} className={`min-w-[28px] text-[28px]`}>

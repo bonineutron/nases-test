@@ -1,5 +1,3 @@
-![fundes-log](https://i0.wp.com/fundes.org/wp-content/uploads/2021/11/Fundes_Latinoame%CC%81rica-1.png?fit=394%2C116&ssl=1)
-
 ## Environment variables
 
 The repository has two development environments, one for development and another for production. An independent file should be created for each environment in the following way:
@@ -23,14 +21,14 @@ The repository has two development environments, one for development and another
 This will be the content of the .env file:
 
 ```
-VITE_API_URL=""
-VITE_BUILD_ENV="" // "production" | "development"
 VITE_SECRET_KEY=""
-VITE_GOOGLE_CLIENT_ID=""
-VITE_API_TOKEN_USERS=""
-VITE_API_TOKEN_OPERATIONS=""
-VITE_API_TOKEN_REPORTS=""
-VITE_TTL="" // "1" | "2"
+
+VITE_FIREBASE_APIKEY=""
+VITE_FIREBASE_AUTHDOMAIN=""
+VITE_FIREBASE_PROJECTID=""
+VITE_FIREBASE_STORAGEBUCKET=""
+VITE_FIREBASE_MESSAGINGSENDERID=""
+VITE_FIREBASE_APPID=""
 ```
 
 ## Installation
@@ -94,3 +92,6 @@ npm run build-production
 -  Redux
 -  Material UI
 -  Git
+-  Firebase/firestore
+-  Firebase/storage
+-  Firebase/auth

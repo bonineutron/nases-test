@@ -1,59 +1,135 @@
-import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { getPosts, updatePost } from '@/firebase/config';
+import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { IPost } from './Home.interface';
 
 export function Home(): JSX.Element {
    // Configuration
    const navigate = useNavigate();
 
    // Redux states
-   const { name } = useSelector((state: RootState) => state.user);
+   const { email } = useSelector((state: RootState) => state.user);
+
+   // States
+   const [posts, setPosts] = useState<IPost[]>([]);
+
+   const [loading, setLoading] = useState<boolean>(true);
 
    // Effects
    useEffect(() => {
-      if (!name) {
+      getAllPosts();
+   }, []);
+
+   useEffect(() => {
+      if (!email) {
          navigate('/login');
       }
-   }, [name]);
+   }, [email]);
+
+   // Methods
+   const getAllPosts = async (): Promise<void> => {
+      const querySnapshot = await getPosts();
+
+      const postsData = querySnapshot.docs.map((doc) => ({
+         ...(doc.data() as IPost),
+         id: doc.id,
+         autor: doc.data().email
+      }));
+
+      setPosts(postsData);
+
+      setLoading(false);
+   };
+
+   const favoriteValidation = async (post: IPost): Promise<void> => {
+      const validateLikedAutor = post.likes.filter((like) => like === email);
+
+      const index = posts.findIndex((item) => item.id === post.id);
+
+      if (validateLikedAutor.length === 0) {
+         if (index !== -1) {
+            const updatedPosts = [...posts];
+
+            updatedPosts[index] = { ...updatedPosts[index], likes: [...post.likes, email] };
+
+            setPosts(updatedPosts);
+
+            await updatePost(post.id, {
+               title: post.title,
+               urlImage: post.urlImage,
+               email: post.autor,
+               likes: [...post.likes, email]
+            });
+         }
+      }
+
+      if (validateLikedAutor.length > 0) {
+         if (index !== -1) {
+            const updatedPosts = [...posts];
+
+            // Eliminar el email del arreglo de likes
+            updatedPosts[index] = {
+               ...updatedPosts[index],
+               likes: post.likes.filter((like) => like !== email)
+            };
+
+            setPosts(updatedPosts);
+
+            await updatePost(post.id, {
+               title: post.title,
+               urlImage: post.urlImage,
+               email: post.autor,
+               likes: post.likes.filter((like) => like !== email)
+            });
+         }
+      }
+   };
+
+   const favoriteIcon = (post: IPost): JSX.Element => {
+      const validateLikedAutor = post.likes.filter((like) => like === email);
+
+      if (validateLikedAutor.length > 0) {
+         return <GoHeartFill />;
+      }
+
+      return <GoHeart />;
+   };
 
    return (
-      <div className='relative h-full w-full overflow-hidden'>
-         <img src='/photographs/home-picture.jpg' alt='home-picture' className='h-full w-full object-cover' />
+      <div className='flex flex-wrap gap-[2%] !gap-y-4'>
+         {!loading &&
+            posts.length > 0 &&
+            posts.map((post) => (
+               <div key={post.id} className='h-fit w-full md:w-[32%] p-3 bg-white shadow-md rounded-md'>
+                  <img src={post.urlImage} alt={post.id} className='w-full h-auto min-h-[280px]' />
 
-         <div className='absolute top-[10px] left-[10px] w-full max-w-[320px] bg-white p-3 rounded-md shadow-md md:max-w-[500px] md:top-[30px] md:left-[30px]'>
-            <div className='flex flex-col items-start gap-1 text-[18px] font-semibold text-nowrap md:flex-row md: md:text-[22px]'>
-               <p>!Hola</p>
+                  <p className='text-[14px] mt-1 italic'>{post.autor}</p>
 
-               <p>{name}!</p>
+                  <p className='text-[18px] mt-1'>{post.title}</p>
 
-               <p>👋🏻</p>
-            </div>
+                  <div className='flex items-center gap-3 justify-between mt-3'>
+                     <p className='text-[14px]'>Total me gusta: {post.likes.length}</p>
 
-            <p className='text-[16px]'>Explora FUNDES Synergy, una herramienta exclusivamente diseñada para ti.</p>
-         </div>
+                     <button onClick={() => favoriteValidation(post)} className='text-[28px]'>
+                        {favoriteIcon(post)}
+                     </button>
+                  </div>
+               </div>
+            ))}
 
-         <div className='absolute bottom-[50px] right-[10px] w-full max-w-[300px] md:max-w-[400px] bg-white p-3 rounded-md shadow-md md:bottom-[120px] md:right-[30px]'>
-            <div className='w-fit h-fit p-1 bg-primary-color text-white text-[24px] rounded-full mb-3'>
-               <AiOutlineExclamationCircle />
-            </div>
-
-            <p>
-               Para empezar, puedes explorar las opciones en el menú lateral. Si tienes alguna pregunta, no dudes en
-               contactarnos al correo: soporte@fundes.org
-            </p>
-         </div>
-
-         <img
-            src='/photographs/home-img-data.jpg'
-            alt='home-data'
-            className='absolute bottom-[120px] left-[-10px] rounded-lg hidden md:block'
-         />
-
-         <div className='fixed bottom-0 left-0 h-fit w-full bg-white px-6 py-2 text-primary-gray text-right rounded-t-md shadow-md'>
-            © 2024, FUNDES Latinoamérica
-         </div>
+         {loading && (
+            <>
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+               <div className='h-[400px] w-full md:w-[32%] p-3 bg-gray-400 shadow-md rounded-md animate-pulse' />
+            </>
+         )}
       </div>
    );
 }

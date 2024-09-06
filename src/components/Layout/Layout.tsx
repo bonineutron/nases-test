@@ -40,24 +40,15 @@ export function Layout({ children }: LayoutProps): JSX.Element {
       <div className='h-screen w-screen flex overflow-hidden bg-gray-50'>
          <SideBarDesktop />
 
-         <div
-            className={`h-full w-full flex flex-col overflow-x-hidden ${
-               pathname === '/' ? 'overflow-y-hidden' : 'overflow-y-auto'
-            }`}>
+         <div className={`h-full w-full flex flex-col overflow-x-hidden`}>
             <TopBar />
 
             <div className='h-full w-full flex flex-col justify-between items-center'>
-               {pathname !== '/' && (
-                  <>
-                     <div className='h-fit w-full max-w-[1400px] p-3 md:p-6'>{children}</div>
+               <div className='h-fit w-full max-w-[1000px] p-3 md:p-6'>{children}</div>
 
-                     <div className='h-fit w-full flex items-center justify-end px-6 pb-3 text-primary-gray'>
-                        © 2024, FUNDES Latinoamérica
-                     </div>
-                  </>
-               )}
-
-               {pathname === '/' && <div className='h-full w-full'>{children}</div>}
+               <div className='h-fit w-full flex items-center justify-end px-6 pb-3 text-primary-gray'>
+                  © 2024, Boni Dev.
+               </div>
             </div>
          </div>
 

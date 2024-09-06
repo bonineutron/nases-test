@@ -25,11 +25,11 @@ export function SideBarDesktop(): JSX.Element {
                className={`h-full w-full max-h-[50px] px-4 flex items-center ${
                   openSideBarDesktop || isHovered ? 'justify-between' : 'justify-center'
                }`}>
-               <Link to='/' className='h-full w-fit'>
+               <Link to='/' className='h-full w-fit flex items-center'>
                   <img
-                     src='https://i0.wp.com/fundes.org/wp-content/uploads/2021/11/Fundes_Latinoamérica-1.png?fit=394%2C116&ssl=1'
-                     alt='logo-fundes'
-                     className={`h-full w-auto ${openSideBarDesktop || isHovered ? '' : 'hidden'}`}
+                     src='/logo_md.svg'
+                     alt='logo'
+                     className={`h-[18px] w-auto ${openSideBarDesktop || isHovered ? '' : 'hidden'}`}
                   />
                </Link>
 

@@ -17,9 +17,7 @@ interface InputProps {
    fullWidth?: boolean;
    customWidth?: string;
    className?: string;
-   outlined?: boolean;
    disabled?: boolean;
-   ref?: HTMLInputElement | null;
 }
 
 export function Input({
@@ -36,9 +34,7 @@ export function Input({
    multiline,
    customWidth,
    className,
-   outlined,
-   disabled,
-   ref
+   disabled
 }: InputProps): React.JSX.Element {
    // States
    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
@@ -63,9 +59,7 @@ export function Input({
 
    return (
       <div
-         className={`relative ${multiline ? '!min-h-[142px]' : ''} ${className ?? ''} ${
-            type === 'date' ? 'min-h-[87px]' : 'min-h-[72px]'
-         }`}
+         className={`relative min-h-[70px] ${multiline ? '!min-h-[155px]' : ''} ${className ?? ''}`}
          style={{ width: validateWidthInputs(screenWidth, fullWidth, customWidth) }}>
          <ThemeProvider theme={theme}>
             {type === 'date' && <p className='text-[14px] mb-1 text-primary-gray pl-1'>{label}</p>}
@@ -80,7 +74,7 @@ export function Input({
                onBlur={onBlur}
                error={error}
                helperText={error ? errorMessage ?? 'Valor requerido' : ''}
-               variant={outlined ? 'outlined' : 'filled'}
+               variant={'outlined'}
                size='small'
                className='w-full bg-white'
                InputLabelProps={{
@@ -90,6 +84,7 @@ export function Input({
                rows={multiline ? 4 : undefined}
                disabled={disabled ?? false}
                onKeyDown={(event) => handleKeyDown(event)}
+               autoComplete={name}
             />
          </ThemeProvider>
       </div>
